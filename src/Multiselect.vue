@@ -1,7 +1,7 @@
 <template>
   <div
     :tabindex="searchable ? -1 : tabindex"
-    :class="{ 'multiselect--active': isOpen, 'multiselect--disabled': disabled, 'multiselect--above': isAbove }"
+    :class="{ 'multiselect--active': isOpen, 'multiselect--disabled': disabled, 'multiselect--above': isAbove, 'multiselect--hidden-input': !showSearchInput }"
     @focus="activate()"
     @blur="searchable ? false : deactivate()"
     @keydown.self.down.prevent="pointerForward()"
@@ -37,7 +37,6 @@
           type="text"
           autocomplete="off"
           :placeholder="placeholder"
-          v-show="showSearchInput"
           :style="inputStyle"
           :value="isOpen ? search : currentOptionLabel"
           :disabled="disabled"
@@ -58,9 +57,7 @@
           v-text="currentOptionLabel">
         </span>
         <span v-if="hasSingleSelectedSlot && !showSearchInput">
-          <slot name="singleSelected" :option="visibleSingleValue">
-
-          </slot>
+          <slot name="singleSelected" :option="visibleSingleValue"></slot>
         </span>
       </div>
       <transition name="multiselect">
@@ -424,6 +421,16 @@ fieldset[disabled] .multiselect {
 .multiselect__single:focus {
   border-color: #a8a8a8;
   outline: none;
+}
+
+.multiselect--hidden-input .multiselect__input {
+  position: absolute;
+  opacity: 0;
+}
+
+.multiselect--active .multiselect__input {
+  position: static;
+  opacity: 1;
 }
 
 .multiselect__single {
