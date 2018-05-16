@@ -102,12 +102,12 @@
             </template>
             <li v-show="showNoResults && (filteredOptions.length === 0 && search && !loading)">
               <span class="multiselect__option">
-                <slot name="noResult">{{ noResultsLabelText }}</slot>
+                <slot name="noResult">{{ noResultsLabel}}</slot>
               </span>
             </li>
             <li v-show="filteredOptions.length === 0 && !search && !loading">
               <span class="multiselect__option">
-                {{ noOptionsLabelText }}
+                {{ noOptionsLabel }}
               </span>
             </li>
             <slot name="afterList"></slot>
@@ -279,16 +279,6 @@
       selectedLabelText () {
         return this.showLabels
           ? this.selectedLabel
-          : ''
-      },
-      noOptionsLabelText () {
-        return this.showLabels
-          ? this.noOptionsLabel
-          : ''
-      },
-      noResultsLabelText () {
-        return this.showLabels
-          ? this.noResultsLabel
           : ''
       },
       inputStyle () {
