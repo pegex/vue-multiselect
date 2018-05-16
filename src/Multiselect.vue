@@ -105,6 +105,11 @@
                 <slot name="noResult">No elements found. Consider changing the search query.</slot>
               </span>
             </li>
+            <li v-show="filteredOptions.length === 0 && !search && !loading">
+              <span class="multiselect__option">
+                {{ noOptionsLabelText }}
+              </span>
+            </li>
             <slot name="afterList"></slot>
           </ul>
         </div>
@@ -156,6 +161,15 @@
       deselectLabel: {
         type: String,
         default: 'Press enter to remove'
+      },
+      /**
+       * String to show when there are no options to select from
+       * @default 'No options available'
+       * @type {String}
+      */
+      noOptionsLabel: {
+        type: String,
+        default: 'No options available'
       },
       /**
        * Decide whether to show pointer labels
@@ -256,6 +270,11 @@
       selectedLabelText () {
         return this.showLabels
           ? this.selectedLabel
+          : ''
+      },
+      noOptionsLabelText () {
+        return this.showLabels
+          ? this.noOptionsLabel
           : ''
       },
       inputStyle () {
