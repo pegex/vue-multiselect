@@ -101,12 +101,12 @@
               </li>
             </template>
             <li v-show="showNoResults && (filteredOptions.length === 0 && search && !loading)">
-              <span class="multiselect__option">
+              <span class="multiselect__option multiselect__option--empty">
                 <slot name="noResult">{{ noResultsLabel}}</slot>
               </span>
             </li>
             <li v-show="filteredOptions.length === 0 && !search && !loading">
-              <span class="multiselect__option">
+              <span class="multiselect__option multiselect__option--empty">
                 {{ noOptionsLabel }}
               </span>
             </li>
