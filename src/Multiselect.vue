@@ -102,7 +102,7 @@
             </template>
             <li v-show="showNoResults && (filteredOptions.length === 0 && search && !loading)">
               <span class="multiselect__option">
-                <slot name="noResult">No elements found. Consider changing the search query.</slot>
+                <slot name="noResult">{{ noResultsLabelText }}</slot>
               </span>
             </li>
             <li v-show="filteredOptions.length === 0 && !search && !loading">
@@ -170,6 +170,15 @@
       noOptionsLabel: {
         type: String,
         default: 'No options available'
+      },
+      /**
+       * String to show when there are no options to select from
+       * @default 'No options available'
+       * @type {String}
+      */
+      noResultsLabel: {
+        type: String,
+        default: 'No results for your search query'
       },
       /**
        * Decide whether to show pointer labels
@@ -275,6 +284,11 @@
       noOptionsLabelText () {
         return this.showLabels
           ? this.noOptionsLabel
+          : ''
+      },
+      noResultsLabelText () {
+        return this.showLabels
+          ? this.noResultsLabel
           : ''
       },
       inputStyle () {
