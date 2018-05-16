@@ -76,6 +76,15 @@
               </span>
             </li>
             <template v-if="!max || internalValue.length < max">
+              <li v-if="hasAddNewSlot" class="multiselect__element">
+                <span
+                  :class="optionHighlight(-1, option)"
+                  @click.stop="select(option)"
+                  @mouseenter.self="pointerSet(-1)"
+                  class="multiselect__option">
+                    <slot name="addNew"></slot>
+                </span>
+              </li>
               <li class="multiselect__element" v-for="(option, index) of filteredOptions" :key="index">
                 <span
                   v-if="!(option && (option.$isLabel || option.$isDisabled))"
@@ -163,7 +172,7 @@
         default: 'Press enter to remove'
       },
       /**
-       * String to show when there are no options to select from
+       * String to show when there are no options to select
        * @default 'No options available'
        * @type {String}
       */
@@ -256,6 +265,9 @@
       },
       hasSingleSelectedSlot () {
         return !!this.$scopedSlots.singleSelected
+      },
+      hasAddNewSlot () {
+        return !!this.$scopedSlots.addNew
       },
       deselectLabelText () {
         return this.showLabels
