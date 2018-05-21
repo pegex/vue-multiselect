@@ -75,6 +75,11 @@
                 <slot name="maxElements">Maximum of {{ max }} options selected. First remove a selected option to select another.</slot>
               </span>
             </li>
+            <li v-show="search && loading">
+              <span class="multiselect__option multiselect__option--empty">
+                <slot name="searching">{{ searchingLabel }}</slot>
+              </span>
+            </li>
             <template v-if="!max || internalValue.length < max">
               <li class="multiselect__element" v-for="(option, index) of filteredOptions" :key="index">
                 <span
@@ -134,6 +139,15 @@
       name: {
         type: String,
         default: ''
+      },
+      /**
+       * String to show when a search is in progress
+       * @default 'Press enter to select'
+       * @type {String}
+       */
+      searchingLabel: {
+        type: String,
+        default: 'Searching...'
       },
       /**
        * String to show when pointing to an option
