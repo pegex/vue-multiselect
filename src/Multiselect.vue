@@ -96,9 +96,17 @@
                     </slot>
                 </span>
                 <span
-                  v-if="option && (option.$isLabel || option.$isDisabled)"
+                  v-if="option && option.$isDisabled"
                   :class="optionHighlight(index, option)"
                   class="multiselect__option multiselect__option--disabled">
+                    <slot name="option" :option="option" :search="search">
+                      <span>{{ getOptionLabel(option) }}</span>
+                    </slot>
+                </span>
+                <span
+                  v-if="option && option.$isLabel"
+                  :class="optionHighlight(index, option)"
+                  class="multiselect__option multiselect__group-label">
                     <slot name="option" :option="option" :search="search">
                       <span>{{ getOptionLabel(option) }}</span>
                     </slot>
