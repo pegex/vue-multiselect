@@ -119,6 +119,13 @@ export default {
       type: String
     },
     /**
+     * Compare objects by multiple keys
+     * @type {String[]}
+     */
+    trackByMultiple: {
+      type: Array
+    },
+    /**
      * Label to look for in option Object
      * @default 'label'
      * @type {String}
@@ -335,7 +342,10 @@ export default {
       return options.slice(0, this.optionsLimit)
     },
     valueKeys () {
-      if (this.trackBy) {
+      if (this.trackByMultiple) {
+        console.log(this.internalValue.map(this.getMultiKey))
+        return this.internalValue.map(this.getMultiKey)
+      } else if (this.trackBy) {
         return this.internalValue.map(element => element[this.trackBy])
       } else {
         return this.internalValue
@@ -438,9 +448,13 @@ export default {
      * @returns {Boolean} returns true if element is selected
      */
     isSelected (option) {
-      const opt = this.trackBy
-        ? option[this.trackBy]
-        : option
+      let opt = option
+      if (this.trackByMultiple) {
+        opt = this.getMultiKey(option)
+      } else if (this.trackBy) {
+        opt = option[this.trackBy]
+      }
+
       return this.valueKeys.indexOf(opt) > -1
     },
     /**
@@ -529,7 +543,7 @@ export default {
       }
 
       const index = typeof option === 'object'
-        ? this.valueKeys.indexOf(option[this.trackBy])
+        ? this.valueKeys.indexOf(this.trackByMultiple ? this.getMultiKey(option) : option[this.trackBy])
         : this.valueKeys.indexOf(option)
 
       this.internalValue.splice(index, 1)
@@ -625,6 +639,18 @@ export default {
         this.prefferedOpenDirection = 'above'
         this.optimizedHeight = Math.min(spaceAbove - 40, this.maxHeight)
       }
+    },
+    /**
+     * Calculates key string from multiple properties on an option (objects only)
+     * Used in conjuction with the 'trackByMultiple' prop
+     * @param {Object} option
+     */
+    getMultiKey (option) {
+      let multiKey = ''
+      for (let key of this.trackByMultiple) {
+        multiKey += ('_' + option[key])
+      }
+      return multiKey
     }
   }
 }
