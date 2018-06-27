@@ -343,7 +343,6 @@ export default {
     },
     valueKeys () {
       if (this.trackByMultiple) {
-        console.log(this.internalValue.map(this.getMultiKey))
         return this.internalValue.map(this.getMultiKey)
       } else if (this.trackBy) {
         return this.internalValue.map(element => element[this.trackBy])
