@@ -69,7 +69,7 @@
           :style="{ maxHeight: optimizedHeight + 'px' }"
           ref="list">
           <ul class="multiselect__content" :style="contentStyle">
-            <slot name="beforeList"></slot>
+            <slot name="beforeList" :search="search"></slot>
             <li v-if="multiple && max === internalValue.length">
               <span class="multiselect__option">
                 <slot name="maxElements">Maximum of {{ max }} options selected. First remove a selected option to select another.</slot>
@@ -195,7 +195,7 @@
       },
       /**
        * String to show when there are no options to select from
-       * @default 'No options available'
+       * @default 'No results for your search query'
        * @type {String}
       */
       noResultsLabel: {
