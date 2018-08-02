@@ -9,10 +9,6 @@
     @keydown.enter.tab.stop.self="addPointerElement($event)"
     @keyup.esc="deactivate()"
     class="multiselect">
-      <slot name="caret" :toggle="toggle">
-        <div @mousedown.prevent.stop="toggle()" class="multiselect__select"></div>
-      </slot>
-      <slot name="clear" :search="search"></slot>
       <div ref="tags" class="multiselect__tags">
         <div class="multiselect__tags-wrap" v-show="visibleValues.length > 0">
           <template v-for="option of visibleValues" @mousedown.prevent>
@@ -70,6 +66,13 @@
           ref="list">
           <ul class="multiselect__content" :style="contentStyle">
             <slot name="beforeList" :search="search"></slot>
+            <div v-if="allowActionFromSearch && search"
+              :class="optionHighlight(-1)"
+              @click.stop="emitActionFromSearch()"
+              @mouseenter.self="pointerSet(-1)"
+              class="multiselect__element multiselect__element--action-from-search">
+              <slot name="actionFromSearchLabel" :search="search"></slot>
+            </div>
             <li v-if="multiple && max === internalValue.length">
               <span class="multiselect__option">
                 <slot name="maxElements">Maximum of {{ max }} options selected. First remove a selected option to select another.</slot>
@@ -127,6 +130,10 @@
           </ul>
         </div>
       </transition>
+      <slot name="caret" :toggle="toggle">
+        <div @mousedown.prevent.stop="toggle()" class="multiselect__select"></div>
+      </slot>
+      <slot name="clear" :search="search"></slot>
   </div>
 </template>
 

@@ -299,6 +299,10 @@ export default {
     preserveSearch: {
       type: Boolean,
       default: false
+    },
+    allowActionFromSearch: {
+      type: Boolean,
+      default: false
     }
   },
   mounted () {
@@ -605,8 +609,12 @@ export default {
       } else {
         this.$el.blur()
       }
-      if (!this.preserveSearch) this.search = ''
       this.$emit('close', this.getValue(), this.id)
+      if (!this.preserveSearch) {
+        this.$nextTick(() => {
+          this.search = ''
+        })
+      }
     },
     /**
      * Call this.activate() or this.deactivate()
@@ -650,6 +658,9 @@ export default {
         multiKey += ('_' + option[key])
       }
       return multiKey
+    },
+    emitActionFromSearch () {
+      this.$emit('action-from-search', this.search)
     }
   }
 }

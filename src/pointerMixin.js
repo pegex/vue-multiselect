@@ -1,7 +1,7 @@
 export default {
   data () {
     return {
-      pointer: 0,
+      pointer: this.allowActionFromSearch ? -1 : 0,
       pointerDirty: false
     }
   },
@@ -40,12 +40,14 @@ export default {
     optionHighlight (index, option) {
       return {
         'multiselect__option--highlight': index === this.pointer && this.showPointer,
-        'multiselect__option--selected': this.isSelected(option)
+        'multiselect__option--selected': option && this.isSelected(option)
       }
     },
     addPointerElement ({ key } = 'Enter') {
       /* istanbul ignore else */
-      if (this.filteredOptions.length > 0) {
+      if (this.allowActionFromSearch && this.pointer === -1 && this.search) {
+        this.emitActionFromSearch()
+      } else if (this.filteredOptions.length > 0 && this.pointer >= 0) {
         this.select(this.filteredOptions[this.pointer], key)
       }
       this.pointerReset()
@@ -72,6 +74,8 @@ export default {
         }
         /* istanbul ignore else */
         if (this.filteredOptions[this.pointer].$isLabel) this.pointerBackward()
+      } else if (this.allowActionFromSearch && this.pointer === 0) {
+        this.pointer = -1
       } else {
         /* istanbul ignore else */
         if (this.filteredOptions[0].$isLabel) this.pointerForward()
@@ -81,7 +85,7 @@ export default {
     pointerReset () {
       /* istanbul ignore else */
       if (!this.closeOnSelect) return
-      this.pointer = 0
+      this.pointer = -1
       /* istanbul ignore else */
       if (this.$refs.list) {
         this.$refs.list.scrollTop = 0
@@ -92,10 +96,10 @@ export default {
       if (this.pointer >= this.filteredOptions.length - 1) {
         this.pointer = this.filteredOptions.length
           ? this.filteredOptions.length - 1
-          : 0
+          : -1
       }
 
-      if (this.filteredOptions.length > 0 && this.filteredOptions[this.pointer].$isLabel) {
+      if (this.filteredOptions.length > 0 && this.pointer >= 0 && this.filteredOptions[this.pointer].$isLabel) {
         this.pointerForward()
       }
     },
