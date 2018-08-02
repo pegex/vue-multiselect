@@ -661,6 +661,7 @@ export default {
     },
     emitActionFromSearch () {
       this.$emit('action-from-search', this.search)
+      this.deactivate()
     }
   }
 }
