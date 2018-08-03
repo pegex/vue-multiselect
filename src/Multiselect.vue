@@ -66,13 +66,13 @@
           ref="list">
           <ul class="multiselect__content" :style="contentStyle">
             <slot name="beforeList" :search="search"></slot>
-            <div v-if="allowActionFromSearch && search"
+            <li v-if="allowActionFromSearch && search"
               :class="optionHighlight(-1)"
               @click.stop="emitActionFromSearch()"
               @mouseenter.self="pointerSet(-1)"
               class="multiselect__element multiselect__element--action-from-search">
               <slot name="actionFromSearchLabel" :search="search"></slot>
-            </div>
+            </li>
             <li v-if="multiple && max === internalValue.length">
               <span class="multiselect__option">
                 <slot name="maxElements">Maximum of {{ max }} options selected. First remove a selected option to select another.</slot>
@@ -84,7 +84,7 @@
               </span>
             </li>
             <template v-if="!max || internalValue.length < max">
-              <li class="multiselect__element" v-for="(option, index) of filteredOptions" :key="index">
+              <li class="multiselect__element multiselect__element--option" v-for="(option, index) of filteredOptions" :key="index">
                 <span
                   v-if="!(option && (option.$isLabel || option.$isDisabled))"
                   :class="optionHighlight(index, option)"

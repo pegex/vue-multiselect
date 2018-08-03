@@ -593,6 +593,15 @@ export default {
         this.$el.focus()
       }
       this.$emit('open', this.id)
+
+      // Measure the option height
+      this.$nextTick(() => {
+        if (this.filteredOptions.length) {
+          if (this.$refs.list.querySelector('.multiselect__element--option')) {
+            this.optionHeight = this.$refs.list.querySelector('.multiselect__element--option').getBoundingClientRect().height
+          }
+        }
+      })
     },
     /**
      * Closes the multiselect’s dropdown.

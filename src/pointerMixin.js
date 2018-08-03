@@ -1,8 +1,12 @@
+let navTimer
+
 export default {
   data () {
     return {
       pointer: this.allowActionFromSearch ? -1 : 0,
-      pointerDirty: false
+      pointerDirty: false,
+      optionHeight: 40,
+      keyboardNavigating: false
     }
   },
   props: {
@@ -14,10 +18,6 @@ export default {
     showPointer: {
       type: Boolean,
       default: true
-    },
-    optionHeight: {
-      type: Number,
-      default: 40
     }
   },
   computed: {
@@ -53,6 +53,7 @@ export default {
       this.pointerReset()
     },
     pointerForward () {
+      this.setKeyboardNavigating()
       /* istanbul ignore else */
       if (this.pointer < this.filteredOptions.length - 1) {
         this.pointer++
@@ -66,6 +67,7 @@ export default {
       this.pointerDirty = true
     },
     pointerBackward () {
+      this.setKeyboardNavigating()
       if (this.pointer > 0) {
         this.pointer--
         /* istanbul ignore else */
@@ -104,8 +106,17 @@ export default {
       }
     },
     pointerSet (index) {
-      this.pointer = index
-      this.pointerDirty = true
+      if (!this.keyboardNavigating) {
+        this.pointer = index
+        this.pointerDirty = true
+      }
+    },
+    setKeyboardNavigating () {
+      this.keyboardNavigating = true
+      clearTimeout(navTimer)
+      navTimer = setTimeout(() => {
+        this.keyboardNavigating = false
+      }, 200)
     }
   }
 }
