@@ -3,6 +3,7 @@ let navTimer
 export default {
   data () {
     return {
+      pointerStart: this.allowActionFromSearch ? -1 : 0,
       pointer: this.allowActionFromSearch ? -1 : 0,
       pointerDirty: false,
       optionHeight: 40,
@@ -76,8 +77,8 @@ export default {
         }
         /* istanbul ignore else */
         if (this.filteredOptions[this.pointer].$isLabel) this.pointerBackward()
-      } else if (this.allowActionFromSearch && this.pointer === 0) {
-        this.pointer = -1
+      } else if (this.pointer === 0) {
+        this.pointer = this.pointerStart // 0 or -1
       } else {
         /* istanbul ignore else */
         if (this.filteredOptions[0].$isLabel) this.pointerForward()
@@ -87,7 +88,7 @@ export default {
     pointerReset () {
       /* istanbul ignore else */
       if (!this.closeOnSelect) return
-      this.pointer = -1
+      this.pointer = this.pointerStart
       /* istanbul ignore else */
       if (this.$refs.list) {
         this.$refs.list.scrollTop = 0
@@ -98,7 +99,7 @@ export default {
       if (this.pointer >= this.filteredOptions.length - 1) {
         this.pointer = this.filteredOptions.length
           ? this.filteredOptions.length - 1
-          : -1
+          : this.pointerStart
       }
 
       if (this.filteredOptions.length > 0 && this.pointer >= 0 && this.filteredOptions[this.pointer].$isLabel) {
