@@ -66,12 +66,14 @@
           ref="list">
           <ul class="multiselect__content" :style="contentStyle">
             <slot name="beforeList" :search="search"></slot>
-            <li v-if="allowActionFromSearch && search"
+            <li v-if="allowCreateNewEvent && (requireSearchForCreateNewEvent ? !!search : true)"
               :class="optionHighlight(-1)"
-              @click.stop="emitActionFromSearch()"
+              @click.stop="emitCreateNew()"
               @mouseenter.self="pointerSet(-1)"
               class="multiselect__element multiselect__element--action-from-search">
-              <slot name="actionFromSearchLabel" :search="search"></slot>
+              <slot name="createNewLabel" :search="search">
+                + Create New
+              </slot>
             </li>
             <li v-if="multiple && max === internalValue.length">
               <span class="multiselect__option">

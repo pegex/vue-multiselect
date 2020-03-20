@@ -300,7 +300,11 @@ export default {
       type: Boolean,
       default: false
     },
-    allowActionFromSearch: {
+    allowCreateNewEvent: {
+      type: Boolean,
+      default: false
+    },
+    requireSearchForCreateNewEvent: {
       type: Boolean,
       default: false
     }
@@ -668,8 +672,8 @@ export default {
       }
       return multiKey
     },
-    emitActionFromSearch () {
-      this.$emit('action-from-search', this.search)
+    emitCreateNew () {
+      this.$emit('create-new', this.search)
       this.deactivate()
     }
   }

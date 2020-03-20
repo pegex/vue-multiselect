@@ -3,8 +3,8 @@ let navTimer
 export default {
   data () {
     return {
-      pointerStart: this.allowActionFromSearch ? -1 : 0,
-      pointer: this.allowActionFromSearch ? -1 : 0,
+      pointerStart: this.allowCreateNewEvent ? -1 : 0,
+      pointer: this.allowCreateNewEvent ? -1 : 0,
       pointerDirty: false,
       optionHeight: 40,
       keyboardNavigating: false
@@ -46,8 +46,8 @@ export default {
     },
     addPointerElement ({ key } = 'Enter') {
       /* istanbul ignore else */
-      if (this.allowActionFromSearch && this.pointer === -1 && this.search) {
-        this.emitActionFromSearch()
+      if (this.allowCreateNewEvent && this.pointer === -1 && (this.requireSearchForCreateNewEvent ? !!this.search : true)) {
+        this.emitCreateNew()
       } else if (this.filteredOptions.length > 0 && this.pointer >= 0) {
         this.select(this.filteredOptions[this.pointer], key)
       }
